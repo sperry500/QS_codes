@@ -79,10 +79,17 @@ def weightAnalysis(filename):
 
 def weightDifference(data1, data2):
     difference = pd.DataFrame(columns=['Weight Difference','Time Difference'])
-    difference['Weight Difference'] = data1['Value']
+    difference['Weight Difference'] = data2['Value']
     for date in data2.index:
-        if (date-timedelta(days=1)) in data1.index:
+        if date in data1.index and data1.loc[date,'AMPM'] == 'AM':
+            difference.loc[date,'Weight Difference'] = data2.loc[date,'Value'] - data1.loc[date,'Value']
+        elif (date-timedelta(days=1)) in data1.index:
             difference.loc[date,'Weight Difference'] = data2.loc[date,'Value'] - data1.loc[date-timedelta(days=1),'Value']
-#        difference['Time Difference'][time] = data2['24 Hour Time'][time] - data1['24 Hour Time'][time-1]
-    return difference   
+
+        if date in data1.index and data1.loc[date,'AMPM'] == 'AM':
+            difference.loc[date,'Time Difference'] = data2.loc[date,'24 Hour Time'] - data1.loc[date,'24 Hour Time']
+        elif (date-timedelta(days=1)) in data1.index:
+            difference.loc[date,'Time Difference'] = data2.loc[date,'24 Hour Time'] - data1.loc[date-timedelta(days=1),'24 Hour Time']
+        
+    return difference 
 

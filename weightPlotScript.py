@@ -26,4 +26,10 @@ plt.show()
 
 difference=weightDifference(night, morning)
 
-    
+print(difference.describe())
+#plot weight change vs. time between measurements
+plt.figure()
+plt.plot(difference['Time Difference'],difference['Weight Difference'],'ro')
+plt.xlabel('Hours between Night and Day Measurements')
+plt.ylabel('Weight Difference (morning - night)')
+plt.show()
